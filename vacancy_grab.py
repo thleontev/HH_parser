@@ -11,7 +11,7 @@ per_page=20
 page=24
 specialization=3
 
-url = "https://api.hh.ru/vacancies?area=1261&specialization="+str(specialization)+"&per_page="+str(per_page)
+url = "https://api.hh.ru/vacancies?area=16&specialization="+str(specialization)+"&per_page="+str(per_page)
 url_company = "https://api.hh.ru/employers/"
 
 f1 = open(csv_file, 'wt', encoding="utf-8")
@@ -48,12 +48,15 @@ while i <= page:
         vac_per_page=found-(i-1)*per_page
     
     while n < vac_per_page:
-        name = data_vac['items'][n]['name']
-        requirement = data_vac['items'][n]['snippet']['requirement']
-        responsibility = data_vac['items'][n]['snippet']['responsibility']
-        area_name = data_vac['items'][n]['area']['name']
-        employer_name = data_vac['items'][n]['employer']['name']
-        employer_id = data_vac['items'][n]['employer']['id']
+        try:
+            name = data_vac['items'][n]['name']
+            requirement = data_vac['items'][n]['snippet']['requirement']
+            responsibility = data_vac['items'][n]['snippet']['responsibility']
+            area_name = data_vac['items'][n]['area']['name']
+            employer_name = data_vac['items'][n]['employer']['name']
+            employer_id = data_vac['items'][n]['employer']['id']
+        except:
+            print(">>> Error parsing data, continue...")
         writer1.writerow((name, requirement, responsibility, area_name, employer_name, employer_id))
         print (str(n)+". "+name,"("+employer_name+")")
         n = n + 1
